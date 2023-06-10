@@ -11,10 +11,16 @@ struct sockaddr_in* setSockaddr(struct sockaddr_in* server_addr,int af,const cha
     memset(server_addr,0,sizeof(struct sockaddr_in));
     server_addr->sin_family=af;
     server_addr->sin_port=htons(server_port);
+    if(server_addr->sin_port==0)
+        myError("error!No that port.");
     #if _WIN32
         server_addr->sin_addr.S_un.S_addr=inet_addr(server_ip);
+        if(server_addr->sin_addr.S_un.S_addr==INADDR_NONE)
+            myError("error!No that ip.");
     #elif __linux__
-        inet_pton(af,server_ip,&server_addr->sin_addr.s_addr);
+        int status=inet_pton(af,server_ip,&server_addr->sin_addr.s_addr);
+        if(status==-1)
+            myError("error!No that ip.");
     #endif
     return server_addr;
 }
