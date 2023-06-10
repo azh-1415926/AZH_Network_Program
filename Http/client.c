@@ -1,21 +1,57 @@
 #include "mysocket.h"
 #include "myhttp.h"
-#define SERVER_IP "192.168.168.15"
-#define SERVER_PORT 8080
-#define HOST "192.168.168.15:8080"
-#define URL "/Self/login/"
+//#define SERVER_IP "192.168.168.15"
+//#define SERVER_PORT 8080
+//#define HOST "192.168.168.15:8080"
+//#define URL "/Self/login/"
+static char ServerIp[16];
+static int ServerPort;
+static char Host[21];
+static char Url[32];
+void getHostInfo(){
+    char buf[6];
+    char ch=0;
+    memset(buf,0,sizeof(buf));
+    memset(ServerIp,0,sizeof(ServerIp));
+    memset(Host,0,sizeof(Host));
+    printf("Please input server ip:");
+    for(int i=0;(ch=getchar())&&ch!='\n';){
+        if(ch=='\0')
+            continue;
+        ServerIp[i]=ch;
+        i++;
+    }
+    printf("Please input server port:");
+    while(!scanf("%d",&ServerPort))
+        scanf("%*s");
+    printf("port:%d\n",ServerPort);
+    strcat(Host,ServerIp);
+    Host[strlen(ServerIp)]=':';
+    sprintf(buf,"%d",ServerPort);
+    strcat(Host,buf);
+    printf("Please input server url:");
+    getchar();
+    for(int i=0;(ch=getchar())&&ch!='\n';){
+        if(ch=='\0')
+            continue;
+        Url[i]=ch;
+        i++;
+    }
+}
 int main(){
     SOCKET_FD s;
     char buf[1024];
     struct sockaddr_in server_addr;
-    setSockaddr(&server_addr,AF_INET,SERVER_IP,SERVER_PORT);
-    printf("[*] SERVER_IP:%s\n[*] SERVER_PORT:%d\n",SERVER_IP,SERVER_PORT);
+    struct httpMessage http;
     #if _WIN32
+        system("chcp 65001");
         printf("[-] Winsock Initalize.\n");
         initalizeSocket();
     #endif
-    struct httpMessage http;
-    httpMessageInitalize(&http,sizeof(http),"GET",URL,"HTTP/1.1",HOST);
+    getHostInfo();
+    printf("[*] SERVER_IP:%s\n[*] SERVER_PORT:%d\n",ServerIp,ServerPort);
+    setSockaddr(&server_addr,AF_INET,ServerIp,ServerPort);
+    httpMessageInitalize(&http,sizeof(http),"GET",Url,Host);
     memset(buf,0,sizeof(buf));
     createHttpMessage(buf,&http);
     httpMessageFree(&http);

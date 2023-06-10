@@ -19,8 +19,7 @@ struct httpMessage {
     char* version;
     struct field_name* pField;
 };
-void getUserInfo(char* buf);
-void httpMessageInitalize(struct httpMessage* pMessage,int size,const char* method,const char* url,const char* version,const char* host);
+void httpMessageInitalize(struct httpMessage* pMessage,int size,const char* method,const char* url,const char* host);
 void httpMessageFree(struct httpMessage* pMessage);
 void httpMessageAddField(struct httpMessage* pMessage,const char*key,const char*value);
 void createHttpMessage(char *buf,struct httpMessage* pMessage);
