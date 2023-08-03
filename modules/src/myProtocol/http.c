@@ -1,5 +1,7 @@
-#include "myhttp.h"
+#include <myProtocol/http.h>
+
 #define HTTP_VERSION "HTTP/1.1"
+
 void httpMessageInitalize(struct httpMessage* pMessage,int size,const char* method,const char* url,const char* host){
     if(pMessage==NULL){
         printf("httpMessage is null,intitalize error!\n");
@@ -14,6 +16,7 @@ void httpMessageInitalize(struct httpMessage* pMessage,int size,const char* meth
     pMessage->pField->value=(char*)host;
     pMessage->pField->next=NULL;
 }
+
 void httpMessageFree(struct httpMessage* pMessage){
     if(pMessage==NULL){
         printf("httpMessage is null,free error!\n");
@@ -28,6 +31,7 @@ void httpMessageFree(struct httpMessage* pMessage){
     }
     free(pField);
 }
+
 void httpMessageAddField(struct httpMessage* pMessage,const char*key,const char*value){
     if(pMessage==NULL){
         printf("httpMessage is null,addField error!\n");
@@ -42,6 +46,7 @@ void httpMessageAddField(struct httpMessage* pMessage,const char*key,const char*
     pMessage->pField->value=(char*)value;
     pMessage->pField->next=NULL;
 }
+
 void createHttpMessage(char *buf,struct httpMessage* pMessage){
     if(pMessage==NULL){
         printf("httpMessage is null,create error!\n");
@@ -50,7 +55,6 @@ void createHttpMessage(char *buf,struct httpMessage* pMessage){
     strcat(buf, pMessage->method);
     strcat(buf, " ");
     strcat(buf, pMessage->url);
-    //
     strcat(buf, " ");
     strcat(buf, pMessage->version);
     strcat(buf, "\n");

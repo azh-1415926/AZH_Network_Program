@@ -1,13 +1,16 @@
-#include "mysocket.h"
-#include "myhttp.h"
+#include <mySocket/socket.h>
+#include <myProtocol/http.h>
+
 //#define SERVER_IP "192.168.168.15"
 //#define SERVER_PORT 8080
 //#define HOST "192.168.168.15:8080"
 //#define URL "/Self/login/"
+
 static char ServerIp[16];
 static int ServerPort;
 static char Host[21];
 static char Url[32];
+
 void getHostInfo(){
     char buf[6];
     char ch=0;
@@ -38,6 +41,7 @@ void getHostInfo(){
         i++;
     }
 }
+
 int main(){
     SOCKET_FD s;
     char buf[1024];
