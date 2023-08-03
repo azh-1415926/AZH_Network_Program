@@ -1,4 +1,5 @@
-#include "mysocket.h"
+#include <mySocket/socket.h>
+
 static void myError(const char* err){
     #if _WIN32
         printf("%s\n",err);
@@ -7,6 +8,19 @@ static void myError(const char* err){
     #endif
     exit(1);
 }
+
+// for windows,need inital socket
+#if _WIN32
+
+bool initalizeSocket(){
+    WSADATA wsadata;
+    if(WSAStartup(MAKEWORD(2,2),&wsadata)==0)
+        return true;
+    myError("WSAStart error!");
+}
+
+#endif
+
 struct sockaddr_in* setSockaddr(struct sockaddr_in* server_addr,int af,const char* server_ip,int server_port){
     memset(server_addr,0,sizeof(struct sockaddr_in));
     server_addr->sin_family=af;
@@ -24,6 +38,7 @@ struct sockaddr_in* setSockaddr(struct sockaddr_in* server_addr,int af,const cha
     #endif
     return server_addr;
 }
+
 SOCKET_FD Socket(int af,int type,int protocol){
     SOCKET_FD s=socket(af,type,protocol);
     #if _WIN32
@@ -36,6 +51,7 @@ SOCKET_FD Socket(int af,int type,int protocol){
     #endif
     myError("socket error!");
 }
+
 bool Connect(SOCKET_FD s,struct sockaddr* server_addr,socklen_t server_len){
     int status;
     #if __linux__
@@ -62,6 +78,7 @@ bool Connect(SOCKET_FD s,struct sockaddr* server_addr,socklen_t server_len){
     #endif
     return true;
 }
+
 void setTimeout(SOCKET_FD s,int time){
     struct timeval timeout={time,0};
     setsockopt(s,SOL_SOCKET,SO_SNDTIMEO,(char*)&timeout,sizeof(struct timeval));
@@ -69,6 +86,7 @@ void setTimeout(SOCKET_FD s,int time){
         setsockopt(s,SOL_SOCKET,SO_RCVTIMEO,(char*)&timeout,sizeof(struct timeval));
     #endif
 }
+
 void closeSocket(SOCKET_FD s){
     #if _WIN32
         closesocket(s);
@@ -77,11 +95,3 @@ void closeSocket(SOCKET_FD s){
         close(s);
     #endif
 }
-#if _WIN32
-bool initalizeSocket(){
-    WSADATA wsadata;
-    if(WSAStartup(MAKEWORD(2,2),&wsadata)==0)
-        return true;
-    myError("WSAStart error!");
-}
-#endif
