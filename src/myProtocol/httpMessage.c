@@ -1,4 +1,4 @@
-#include <myProtocol/http.h>
+#include <myProtocol/httpMessage.h>
 
 #define HTTP_VERSION "HTTP/1.1"
 
