@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 2.8.0)
+project(Http)
+
 message(STATUS "The platform is ${CMAKE_HOST_SYSTEM_NAME}")
-set(PROJECT_NAME http)
-set(TOP_DIR ${CMAKE_CURRENT_LIST_DIR}/../../..)
 message(STATUS "The project name is ${PROJECT_NAME}")
 message(STATUS "The source is ${SOURCEFILES}")
-project(${PROJECT_NAME})
+
 add_executable(${PROJECT_NAME} client.c)
-add_subdirectory(${TOP_DIR}/modules modules_binnary_dir)
-target_link_libraries(${PROJECT_NAME} PRIVATE modules)
+
+target_link_libraries(${PROJECT_NAME} PRIVATE AZH_Network_Program)
