@@ -3,8 +3,9 @@ project(Http)
 
 message(STATUS "The platform is ${CMAKE_HOST_SYSTEM_NAME}")
 message(STATUS "The project name is ${PROJECT_NAME}")
-message(STATUS "The source is ${SOURCEFILES}")
 
-add_executable(${PROJECT_NAME} client.c)
+add_executable(Http client.c)
+add_executable(Http_CXX client.cpp)
 
-target_link_libraries(${PROJECT_NAME} PRIVATE AZH_Network_Program)
+target_link_libraries(Http PRIVATE AZH_Network_Program)
+target_link_libraries(Http_CXX PRIVATE AZH_Network_Program_CXX)
