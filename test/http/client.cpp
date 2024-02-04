@@ -15,6 +15,7 @@ int main()
         socket.Connect();
         socket.Send(str);
         std::cout<<socket.Recv();
+        socket.Close();
     }
     catch(std::string error)
     {

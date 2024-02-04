@@ -59,12 +59,16 @@ namespace azh
     
     class Socket
     {
+        private:
+            bool m_IsClosed;
+
         protected:
             SOCKET_FD m_Fd;
 
         public:
             /* 构造函数 */
             Socket(int af=AF_INET,int type=SOCK_STREAM,int protocol=0)
+                : m_IsClosed(false)
             {
                 /* 初始化套接字，win 平台需要*/
                 #if _WIN32
@@ -85,6 +89,7 @@ namespace azh
                     if(m_Fd<=0)
                         throw std::string("socket error!");
                 #endif
+                m_IsClosed=true;
             }
 
             /* 禁止拷贝构造函数、赋值运算符 */
@@ -93,6 +98,14 @@ namespace azh
 
             /* 析构函数 */
             virtual ~Socket()
+            {
+                if(!isClosed())
+                    Close();
+            }
+
+            inline bool isClosed() { return m_IsClosed; }
+
+            inline void Close()
             {
                 #if _WIN32
                     closesocket(m_Fd);
