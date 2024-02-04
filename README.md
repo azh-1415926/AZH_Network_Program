@@ -11,7 +11,7 @@ git submodule add https://github.com/azh-1415926/AZH_Network_Program.git 3rdpart
 
 ```cmake
 add_subdirectory(3rdparty/AZH_Network_Program)
-include_directories(${CMAKE_CURRENT_LIST_DIR}/3rdparty/AZH_Qt_Component/include)
+include_directories(${CMAKE_CURRENT_LIST_DIR}/3rdparty/AZH_Network_Program/include)
 # link with c
 link_directories(${CMAKE_BINARY_DIR}/3rdparty/AZH_Network_Program)
 # link with cxx
