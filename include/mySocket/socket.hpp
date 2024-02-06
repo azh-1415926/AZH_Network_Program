@@ -4,7 +4,7 @@
 /* 通用头文件 */
 #include <iostream>
 #include <cstdbool>
-#include <string>
+#include <string.h>
 
 #if _WIN32
 
