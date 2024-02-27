@@ -82,6 +82,8 @@ namespace azh
         /* 创建 http 报文 */
         std::string createMessage()
         {
+            if(m_Host.empty()||m_Port==0)
+                return std::string();
             std::string message;
             std::string params;
             for(int i=0;i<m_Params.size();i++)
@@ -101,6 +103,9 @@ namespace azh
                 message.append(std::to_string(params.length())+"\r\n");
                 message.append("\r\n"+params+"\r\n");
             }
+            char port[5];
+            itoa(m_Port,port,10);
+            message.append("Host:"+m_Host+port+"\r\n");
             message.append("\r\n");
             return message;
         }
