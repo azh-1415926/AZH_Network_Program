@@ -105,7 +105,7 @@ namespace azh
             }
             char port[5];
             itoa(m_Port,port,10);
-            message.append("Host:"+m_Host+port+"\r\n");
+            message.append("Host:"+m_Host+":"+port+"\r\n");
             message.append("\r\n");
             return message;
         }
